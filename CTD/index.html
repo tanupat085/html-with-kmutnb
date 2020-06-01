@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style-index.css">
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <img src="banner.png" alt="">
+
+        <div class="navigate">
+            <a href="index.html" class="active">Covid-19 World report [API]</a>
+            <a href="covid.html">Covid-19 Thailand report [CRUD]</a>
+        </div>
+
+        <div class="content">
+            <div class="content-left">
+
+                <!-- section 1 -->
+                <div class="content-left-card">
+                    <div class="title">
+                        <i class="fas fa-virus"></i>
+                        Total Cases
+                    </div>
+                    <p id="total_cases">0</p>
+                </div>
+
+                <!-- section 2 -->
+                <div class="content-left-card">
+                    <div class="title">
+                        <i class="fas fa-skull-crossbones"></i>
+                        Total Death
+                    </div>
+                    <p id="total_death" class="danger">0</p>
+                </div>
+
+                <!-- section 3 -->
+                <div class="content-left-card">
+                    <div class="title">
+                        <i class="fas fa-heartbeat"></i>
+                        Total Recovery
+                    </div>
+                    <p id="total_recovery" class="warning">0</p>
+                </div>
+
+                <!-- section 4 -->
+                <div class="content-left-card">
+                    <div class="title">
+                        <i class="fas fa-virus"></i>
+                        New Case
+                    </div>
+                    <p id="new_cases" class="info">0</p>
+                </div>
+
+                <!-- section 5 -->
+                <div class="content-left-card">
+                    <div class="title">
+                        <i class="fas fa-skull-crossbones"></i>
+                        New Death
+                    </div>
+                    <p id="new_death" class="success">0</p>
+                </div>
+
+            </div>
+
+            <div class="content-right">
+                <div class="content-right-card">
+                    <table id="country_state">
+                        <tr>
+                            <th>Country</th>
+                            <th>Cases</th>
+                            <th>Deaths</th>
+                            <th>Serious critical</th>
+                            <th>Total recovered</th>
+                        </tr>
+                        <tr>
+                            <td>hello</td>
+                            <td>hello</td>
+                            <td>hello</td>
+                            <td>hello</td>
+                            <td>hello</td>
+                        </tr>
+                        <tr>
+                            <td>hello</td>
+                            <td>hello</td>
+                            <td>hello</td>
+                            <td>hello</td>
+                            <td>hello</td>
+                        </tr>
+                        <tr>
+                            <td>hello</td>
+                            <td>hello</td>
+                            <td>hello</td>
+                            <td>hello</td>
+                            <td>hello</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
