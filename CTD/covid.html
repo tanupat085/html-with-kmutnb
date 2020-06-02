@@ -9,8 +9,98 @@
     <link rel="stylesheet" href="style-covid.css">
     <!-- Fontawesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+    <!-- The core Firebase JS SDK is always required and must be listed first --> 
+    <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-app.js"></script> 
+    <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase.js"></script> 
+    <!-- TODO: Add SDKs for Firebase products that you want to use https://firebase.google.com/docs/web/setup#available-libraries --> 
+    <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-analytics.js"></script>
+  
+  
+  <script> 
+        // Your web app's Firebase configuration const 
+        firebaseConfig = {
+            apiKey: "AIzaSyBCMVFtdrZm6RdxidSTxstOTAmX6UyuZyA",
+            authDomain: "ctdcovid-47020.firebaseapp.com",
+            databaseURL: "https://ctdcovid-47020.firebaseio.com",
+            projectId: "ctdcovid-47020",
+            storageBucket: "ctdcovid-47020.appspot.com",
+            messagingSenderId: "242278701161",
+            appId: "1:242278701161:web:bd9c8c1b6dfc84ca90eaf8",
+            measurementId: "G-HLMG0LNJZH"
+        }; 
+        // Initialize Firebase 
+        firebase.initializeApp(firebaseConfig); 
+        firebase.analytics(); 
+    </script>
+
+
+
 </head>
+
 <body>
+<script>
+    
+    var myVar = setInterval(myTimer, 1000);
+    function GetfromTime(a,b){
+        firebase.database().ref(a).once('value').then(function(snapshot){
+        document.getElementById(b).innerHTML = snapshot.val(); });  
+    }
+    function myTimer() { 
+        GetfromTime('totalcases','p_total_cases');
+        GetfromTime('totaldeath','p_total_death');
+        GetfromTime('totalrecovery','p_total_recovery');
+        GetfromTime('newcase','p_new_case');
+        GetfromTime('newdeath','p_new_death');
+    }
+
+
+    function CU(){
+        firebase.database().ref("totalcases").set(document.getElementById("input_totalcases").value) ; 
+        firebase.database().ref("totaldeath").set(document.getElementById("input_totaldeath").value) ;
+        firebase.database().ref("totalrecovery").set(document.getElementById("input_totalrecovery").value) ;
+        firebase.database().ref("newcase").set(document.getElementById("input_newcase").value) ;
+        firebase.database().ref("newdeath").set(document.getElementById("input_newdeath").value) ;
+
+        document.getElementById("input_totalcases").value = "";
+        document.getElementById("input_totaldeath").value = ""; 
+        document.getElementById("input_totalrecovery").value = ""; 
+        document.getElementById("input_newcase").value = ""; 
+        document.getElementById("input_newdeath").value = ""; 
+
+        alert("Create/Update Success");
+    }
+
+
+
+
+    function GetfromR(a,b){
+        firebase.database().ref(a).once('value').then(function(snapshot){
+        document.getElementById(b).value = snapshot.val(); });  
+    }
+    function R(){
+        GetfromR('totalcases' , 'input_totalcases');
+        GetfromR('totaldeath' , 'input_totaldeath');
+        GetfromR('totalrecovery' , 'input_totalrecovery');
+        GetfromR('newcase' , 'input_newcase');
+        GetfromR('newdeath' , 'input_newdeath');
+        // firebase.database().ref('totalcases').once('value').then(function(snapshot){
+        // document.getElementById('input_totalcases').value = snapshot.val(); });
+    }
+
+    function GetfromD(a){
+        firebase.database().ref(a).set("");
+    }
+    function D(){
+        GetfromD('totalcases');
+        GetfromD('totaldeath');
+        GetfromD('totalrecovery');
+        GetfromD('newcase');
+        GetfromD('newdeath');
+        
+    }
+</script>
+
+
     <div class="container">
         <img src="firebase.png" alt="">
 
@@ -28,7 +118,7 @@
                         <i class="fas fa-virus"></i>
                         Total Cases
                     </div>
-                    <p id="total_cases">0</p>
+                    <p id="p_total_cases">0</p>
                 </div>
 
                 <!-- section 2 -->
@@ -37,7 +127,7 @@
                         <i class="fas fa-skull-crossbones"></i>
                         Total Death
                     </div>
-                    <p id="total_death" class="danger">0</p>
+                    <p id="p_total_death" class="danger">0</p>
                 </div>
 
                 <!-- section 3 -->
@@ -46,7 +136,7 @@
                         <i class="fas fa-heartbeat"></i>
                         Total Recovery
                     </div>
-                    <p id="total_recovery" class="warning">0</p>
+                    <p id="p_total_recovery" class="warning">0</p>
                 </div>
 
                 <!-- section 4 -->
@@ -55,7 +145,7 @@
                         <i class="fas fa-virus"></i>
                         New Case
                     </div>
-                    <p id="new_cases" class="info">0</p>
+                    <p id="p_new_case" class="info">0</p>
                 </div>
 
                 <!-- section 5 -->
@@ -64,7 +154,7 @@
                         <i class="fas fa-skull-crossbones"></i>
                         New Death
                     </div>
-                    <p id="new_death" class="success">0</p>
+                    <p id="p_new_death" class="success">0</p>
                 </div>
 
             </div>
@@ -75,41 +165,41 @@
                     <div class="from-group">
 
                         <h2> Total cases</h2>
-                        <input type="text" placeholder="Insert total cases">
+                        <input type="text" id="input_totalcases" placeholder="Insert total cases">
                     </div>
 
                         <!-- section2 -->
                     <div class="from-group">
 
                         <h2> Total death</h2>
-                        <input type="text" placeholder="Insert total death">
+                        <input type="text" id= "input_totaldeath"placeholder="Insert total death">
                     </div>
 
                         <!-- section3 -->
                     <div class="from-group">
 
                         <h2> Total recovery</h2>
-                        <input type="text" placeholder="Insert total recovery">
+                        <input type="text" id="input_totalrecovery" placeholder="Insert total recovery">
                     </div>
 
                         <!-- section4 -->
                     <div class="from-group">
 
-                        <h2> New cases</h2>
-                        <input type="text" placeholder="Insert new cases">
+                        <h2> New case</h2>
+                        <input type="text" id="input_newcase" placeholder="Insert new cases">
                     </div>
 
                         <!-- section5 -->
                     <div class="from-group">
 
                         <h2> New death</h2>
-                        <input type="text" placeholder="Insert new death">
+                        <input type="text" id="input_newdeath"placeholder="Insert new death">
                     </div>
 
                     <div class="btn-manage">
-                        <button class = "btn-create" >Add/Edit</button>
-                        <button class = "btn-get" >Get</button>
-                        <button class = "btn-delete" >Delete</button>
+                        <button onclick ="CU()" class = "btn-create" >Add/Edit</button>
+                        <button onclick = "R()" class = "btn-get" >Get</button>
+                        <button onclick= "D()" class = "btn-delete" >Delete</button>
                     </div>
 
 

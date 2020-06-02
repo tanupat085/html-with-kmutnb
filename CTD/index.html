@@ -11,6 +11,42 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
 </head>
 <body>
+<button onclick="LINE()" >
+API
+</button>
+<script>
+        function LINE() {
+        var url = 'https://covid19.th-stat.com/api/open/today'
+        var response = UrlFetchApp.fetch(url, {'muteHttpExceptions': true});
+        var json = response.getContentText();
+        var data = JSON.parse(json);
+        var msg = "รายงานสถานการณ์ โควิด-19"
+        +"\n อัพเดทข้อมูล: "+data['UpdateDate']
+        +"\n"
+        +"\nผู้ติดเชื้อสะสม: "+data['Confirmed']+" ราย"+" \n   (เพิ่มขึ้น : "+ data['NewConfirmed']+" ราย)"
+        +"\nรักษาตัวใน รพ. : "+data['Hospitalized']+" ราย"
+        +"\nรักษาหาย : "+data['Recovered']+" ราย"+" \n   (เพิ่มขึ้น : "+ data['NewRecovered']+" ราย)"
+        +"\nเสียชีวิตสะสม : "+data['Deaths']+" ราย"+" \n   (เพิ่มขึ้น : "+ data['NewDeaths']+" ราย)"
+        +"\n"
+        +"\nข้อมูล: กรมควบคุมโรค(สายด่วน1422)"
+        +"\nกระทรวงสาธารณสุข"
+
+            ;
+        sendLineNotify(msg);
+        }
+        function sendLineNotify(message) {
+            var token = ["AL87ZuXxXLixmVWonug3k0uUe9YASqMoPcaHpyKWGwm"];
+            var options = {
+            "method": "post",
+            "payload": "message=" + message,
+            "headers": {
+            "Authorization": "Bearer " + token
+                    }
+    
+                                                                    };
+        UrlFetchApp.fetch("https://notify-api.line.me/api/notify", options);
+                }
+</script>
     <div class="container">
         <img src="banner.png" alt="">
 
@@ -73,32 +109,12 @@
                 <div class="content-right-card">
                     <table id="country_state">
                         <tr>
+                            <th>Rank</th>
                             <th>Country</th>
                             <th>Cases</th>
                             <th>Deaths</th>
                             <th>Serious critical</th>
                             <th>Total recovered</th>
-                        </tr>
-                        <tr>
-                            <td>hello</td>
-                            <td>hello</td>
-                            <td>hello</td>
-                            <td>hello</td>
-                            <td>hello</td>
-                        </tr>
-                        <tr>
-                            <td>hello</td>
-                            <td>hello</td>
-                            <td>hello</td>
-                            <td>hello</td>
-                            <td>hello</td>
-                        </tr>
-                        <tr>
-                            <td>hello</td>
-                            <td>hello</td>
-                            <td>hello</td>
-                            <td>hello</td>
-                            <td>hello</td>
                         </tr>
                     </table>
                 </div>
@@ -106,5 +122,70 @@
         </div>
     </div>
     <script src="script.js"></script>
+    <script>
+        let new_cases = document.getElementById('new_cases');
+        let new_death = document.getElementById('new_death');
+        let total_death = document.getElementById('total_death');
+        let total_recovery = document.getElementById('total_recovery');
+        let total_cases = document.getElementById('total_cases');
+        let table = document.getElementById('country_state');
+
+        fetch("https://coronavirus-monitor.p.rapidapi.com/coronavirus/worldstat.php", {
+         "method": "GET",
+         "headers": 
+            {
+          "x-rapidapi-host": "coronavirus-monitor.p.rapidapi.com",
+          "x-rapidapi-key": "1477673c50msh334bb7a7a428f06p1c45d0jsnc8eaa74be31c"
+         }
+        })
+        .then(response => response.json().then(data => {
+        console.log(data);
+        total_cases.innerHTML = data.total_cases;
+        new_cases.innerHTML = data.new_cases;
+        new_death.innerHTML = data.new_deaths;
+        total_death.innerHTML = data.total_deaths;
+        total_recovery.innerHTML = data.total_recovered;
+        }))
+        .catch(err => {
+         console.log(err);
+        });
+
+        fetch("https://coronavirus-monitor.p.rapidapi.com/coronavirus/cases_by_country.php", {
+     "method": "GET",
+     "headers": {
+      "x-rapidapi-host": "coronavirus-monitor.p.rapidapi.com",
+      "x-rapidapi-key": "1477673c50msh334bb7a7a428f06p1c45d0jsnc8eaa74be31c"
+     }
+        })
+        .then(response => response.json().then(data => {
+        console.log(data);
+        let countries_stat = data.countries_stat;
+        for(let i=0 ; i<countries_stat.length ; i++) {
+            if( i == 0 || i > 100){
+
+            }
+            
+            console.log(countries_stat[i]);
+            let row = table.insertRow(i + 1);
+            let rank = row.insertCell(0);
+            let country_name = row.insertCell(1);
+            let cases = row.insertCell(2);
+            let deaths = row.insertCell(3);
+            let serious_critical = row.insertCell(4);
+            let recovered_per_country = row.insertCell(5);
+            rank.innerHTML = i  ;
+            country_name.innerHTML = countries_stat[i].country_name;
+            cases.innerHTML = countries_stat[i].cases;
+            deaths.innerHTML = countries_stat[i].deaths;
+            serious_critical.innerHTML = countries_stat[i].serious_critical;
+            recovered_per_country.innerHTML = countries_stat[i].total_recovered; 
+            
+        }
+        }))
+        .catch(err => {
+            console.log(err);
+        });
+
+    </script>
 </body>
 </html>
